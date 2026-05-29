@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NRMD · Estudio de Generación</title>
+<title>NRMD · Generation Studio</title>
+<!-- Favicon (served from the main site) -->
+<link rel="icon" type="image/svg+xml" href="https://nrmd.io/assets/img/brain.svg">
+<link rel="icon" type="image/png" href="https://nrmd.io/assets/img/favicon.png">
+<link rel="apple-touch-icon" href="https://nrmd.io/assets/img/brain.png">
 <!--
   platform.nrmd.io/create — Generation Studio
-  Tema claro NRMD. Composer + widgets por red + RSS de inspiración + recientes.
-  Toda la generación es DUMMY (plantillas locales). Conectar al motor real
-  reemplazando generate() por la llamada a la API.
+  NRMD light theme. Composer + per-network widgets + RSS inspiration + recents.
+  All generation is DUMMY (local templates). Connect the real engine
+  by replacing generate() with the API call.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +42,8 @@ body{font-family:var(--body);color:var(--ink);background:var(--paper-2);-webkit-
 header.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid var(--line)}
 .nav-inner{display:flex;align-items:center;gap:28px;height:64px;max-width:1360px;margin:0 auto;padding:0 28px}
 .brand{display:flex;align-items:center;gap:11px;text-decoration:none}
-.brand .mark{width:30px;height:30px}
+.brand .mark{display:block;width:30px;height:30px;min-width:30px;flex:0 0 auto;object-fit:contain}
+.brand .mark[alt]{font-size:0;color:transparent}
 .brand .word{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.01em;color:var(--ink)}
 .nav-links{display:flex;gap:4px;margin-left:8px}
 .nav-links a{font-size:13.5px;font-weight:500;color:var(--ink-50);text-decoration:none;padding:7px 13px;border-radius:8px;transition:.18s}
@@ -190,12 +195,12 @@ footer{border-top:1px solid var(--line);margin-top:42px;padding:28px 0 50px}
     </a>
     <nav class="nav-links">
       <a href="/">Dashboard</a>
-      <a href="create.html" class="active">Crear</a>
-      <a href="#inspiracion">Inspiración</a>
-      <a href="#recientes">Recientes</a>
+      <a href="create.html" class="active">Create</a>
+      <a href="#inspiracion">Inspiration</a>
+      <a href="#recientes">Recents</a>
     </nav>
     <div class="nav-right">
-      <span class="pill"><span class="dot-live"></span>MOTOR LISTO</span>
+      <span class="pill"><span class="dot-live"></span>ENGINE READY</span>
       <a class="btn-ghost" href="/">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
         Dashboard
@@ -207,9 +212,9 @@ footer{border-top:1px solid var(--line);margin-top:42px;padding:28px 0 50px}
 
 <div class="wrap">
   <div class="page-head">
-    <span class="eyebrow">PLATFORM · ESTUDIO DE GENERACIÓN</span>
-    <h1>Crear<span class="grad-text">.</span></h1>
-    <p>Genera publicaciones por red, notas de blog y descubre inspiración desde tu feed de RSS. Cada salida queda lista para revisar, programar o publicar.</p>
+    <span class="eyebrow">PLATFORM · GENERATION STUDIO</span>
+    <h1>Create<span class="grad-text">.</span></h1>
+    <p>Generate posts by network, blog articles, and discover inspiration from your RSS feed. Every output is ready to review, schedule, or publish.</p>
   </div>
 
   <!-- STUDIO: composer + rss -->
@@ -219,7 +224,7 @@ footer{border-top:1px solid var(--line);margin-top:42px;padding:28px 0 50px}
       <div class="card-h" style="padding-bottom:0">
         <div class="t">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="url(#nrmd-grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.6 7.6"/><circle cx="11" cy="11" r="2"/></svg></span>
-          <div><h3>Composer</h3><div class="sub">Brief → borrador listo para revisar</div></div>
+          <div><h3>Composer</h3><div class="sub">Brief → draft ready to review</div></div>
         </div>
       </div>
 
@@ -227,45 +232,45 @@ footer{border-top:1px solid var(--line);margin-top:42px;padding:28px 0 50px}
 
       <div class="field">
         <label>Brief / idea</label>
-        <textarea class="brief" id="brief" placeholder="Ej. Explica por qué el last-click engaña a los CMOs y cómo NRMD modela la atribución por etapa. Tono experto, una sola idea fuerte, CTA a agendar auditoría."></textarea>
+        <textarea class="brief" id="brief" placeholder="E.g. Explain why last-click misleads CMOs and how NRMD models stage-by-stage attribution. Expert tone, one strong idea, CTA to book an audit."></textarea>
       </div>
 
       <div class="opts">
-        <div class="opt"><label>Tono</label>
-          <select id="tone"><option>Experto / técnico</option><option>Cercano / directo</option><option>Provocador</option><option>Inspiracional</option></select></div>
-        <div class="opt"><label>Longitud</label>
-          <select id="len"><option>Corto</option><option selected>Medio</option><option>Largo</option></select></div>
-        <div class="opt"><label>Objetivo</label>
-          <select id="goal"><option>Autoridad / thought leadership</option><option>Generar leads</option><option>Engagement</option><option>Tráfico al sitio</option></select></div>
-        <div class="opt"><label>Idioma</label>
-          <select id="lang"><option>Español</option><option>Inglés</option><option>ES + EN</option></select></div>
+        <div class="opt"><label>Tone</label>
+          <select id="tone"><option>Expert / technical</option><option>Direct / approachable</option><option>Provocative</option><option>Inspirational</option></select></div>
+        <div class="opt"><label>Length</label>
+          <select id="len"><option>Short</option><option selected>Medium</option><option>Long</option></select></div>
+        <div class="opt"><label>Goal</label>
+          <select id="goal"><option>Authority / thought leadership</option><option>Lead generation</option><option>Engagement</option><option>Site traffic</option></select></div>
+        <div class="opt"><label>Language</label>
+          <select id="lang"><option>English</option><option>Spanish</option><option>EN + ES</option></select></div>
       </div>
 
       <div class="gen-row">
         <button class="btn-gen" id="genBtn">
           <span class="sheen"></span>
           <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l1.5 4L11 8.5 6.5 10 5 14l-1.5-4L-1 8.5"/><path d="M14 3l1.5 4L20 8.5 15.5 10 14 14l-1.5-4L8 8.5" transform="translate(0,0)"/></svg>
-          <span id="genLabel">Generar borrador</span>
+          <span id="genLabel">Generate draft</span>
         </button>
-        <span class="hint">⌘ + ⏎ para generar</span>
+        <span class="hint">⌘ + ⏎ to generate</span>
       </div>
 
       <!-- OUTPUT -->
       <div class="output" id="output">
         <div class="oh">
-          <div class="ttl"><span class="d" id="outDot" style="background:var(--blue)"></span><span id="outLabel">Borrador · LinkedIn</span></div>
+          <div class="ttl"><span class="d" id="outDot" style="background:var(--blue)"></span><span id="outLabel">Draft · LinkedIn</span></div>
           <div class="acts">
-            <button class="oact" id="copyBtn"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>Copiar</button>
-            <button class="oact" id="regenBtn"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Regenerar</button>
-            <button class="oact" id="schedBtn"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>Programar</button>
+            <button class="oact" id="copyBtn"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>Copy</button>
+            <button class="oact" id="regenBtn"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 11-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Regenerate</button>
+            <button class="oact" id="schedBtn"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>Schedule</button>
           </div>
         </div>
         <div class="obody placeholder" id="obody">
           <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="url(#nrmd-grad)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.4"/></svg>
-          <span>Escribe un brief y genera tu primer borrador.<br>Las salidas son dummy hasta conectar el motor.</span>
+          <span>Write a brief and generate your first draft.<br>Outputs are dummy until the engine is connected.</span>
         </div>
         <div class="ofoot">
-          <span id="charCount">0 caracteres</span>
+          <span id="charCount">0 characters</span>
           <span class="tag-soft">DUMMY ENGINE</span>
         </div>
       </div>
@@ -276,13 +281,13 @@ footer{border-top:1px solid var(--line);margin-top:42px;padding:28px 0 50px}
       <div class="card-h">
         <div class="t">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="url(#nrmd-grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 019 9M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1.6"/></svg></span>
-          <div><h3>Inspiración · RSS</h3><div class="sub">Cuentas y blogs que seguimos</div></div>
+          <div><h3>Inspiration · RSS</h3><div class="sub">Accounts and blogs we follow</div></div>
         </div>
       </div>
       <div class="rss-tabs" id="rssTabs">
-        <button class="rss-tab on" data-k="all">Todo</button>
+        <button class="rss-tab on" data-k="all">All</button>
         <button class="rss-tab" data-k="blog">Blogs</button>
-        <button class="rss-tab" data-k="account">Cuentas</button>
+        <button class="rss-tab" data-k="account">Accounts</button>
       </div>
       <div class="rss-list" id="rssList"></div>
     </div>
@@ -290,21 +295,21 @@ footer{border-top:1px solid var(--line);margin-top:42px;padding:28px 0 50px}
 
   <!-- QUICK WIDGETS -->
   <div class="section-label">
-    <span class="eyebrow">GENERADORES RÁPIDOS</span><span class="line"></span>
+    <span class="eyebrow">QUICK GENERATORS</span><span class="line"></span>
   </div>
   <div class="widgets" id="widgets"></div>
 
   <!-- RECENT -->
   <div class="section-label" id="recientes">
-    <span class="eyebrow">PUBLICADO RECIENTEMENTE</span><span class="line"></span>
+    <span class="eyebrow">RECENTLY PUBLISHED</span><span class="line"></span>
   </div>
   <div class="recent-grid" id="recent"></div>
 </div>
 
 <footer>
   <div class="wrap foot">
-    <div>© NRMD · Neuromedia — Estudio de generación de contenido.</div>
-    <div class="mono">MOTOR: DUMMY · CONECTAR EN platform.nrmd.io/api</div>
+    <div>© NRMD · Neuromedia — Content generation studio.</div>
+    <div class="mono">ENGINE: DUMMY · CONNECT AT platform.nrmd.io/api</div>
   </div>
 </footer>
 
@@ -315,7 +320,7 @@ const CHANNELS={
   instagram:{name:'Instagram',color:COLORS.magenta},
   youtube  :{name:'YouTube',  color:COLORS.coral},
   facebook :{name:'Facebook', color:COLORS.cyan},
-  blog     :{name:'Nota de blog',color:COLORS.orange}
+  blog     :{name:'Blog article',color:COLORS.orange}
 };
 const $=s=>document.querySelector(s);
 const hex2rgba=(h,a)=>{const n=parseInt(h.slice(1),16);return`rgba(${n>>16&255},${n>>8&255},${n&255},${a})`};
@@ -337,24 +342,24 @@ $('#chanTabs').addEventListener('click',e=>{
 });
 function updateOutLabel(){
   const c=CHANNELS[activeChan];
-  $('#outLabel').textContent='Borrador · '+c.name;
+  $('#outLabel').textContent='Draft · '+c.name;
   $('#outDot').style.background=c.color;
 }
 
 /* ===== dummy generation templates ===== */
 const TEMPLATES={
-  linkedin:b=>`La mayoría de los equipos de marketing no tienen un problema de presupuesto. Tienen un problema de sistema.\n\n${b||'El last-click te dice quién cerró, no qué construyó la decisión.'}\n\nEn NRMD modelamos la atribución por etapa para que cada peso invertido sea rastreable hasta el resultado — no hasta el último anuncio que alguien tocó.\n\n→ 3 señales de que tu marketing aún es una serie de campañas y no una máquina:\n1. No puedes predecir el resultado del próximo trimestre.\n2. Tus mejores resultados son anecdóticos, no repetibles.\n3. "Funcionó" significa cosas distintas según quién lo reporte.\n\nEl growth predecible empieza cuando dejas de adivinar.\n\n¿Agendamos una auditoría? Link en comentarios. 👇\n\n#GrowthSystems #MarketingInfrastructure #B2B`,
-  instagram:b=>`📌 GUÁRDALO para tu próxima junta de marketing.\n\n${b||'3 señales de que tu marketing no es un sistema (todavía).'}\n\n1️⃣ No puedes predecir el próximo trimestre\n2️⃣ Tus wins no son repetibles\n3️⃣ "Funcionó" = depende de a quién le preguntes\n\nEl growth predecible no es suerte. Es infraestructura.\n\n— NRMD · el operating system del growth\n\n.\n.\n#marketing #growth #b2bmarketing #estrategiadigital #neuromedia`,
-  youtube:b=>`TÍTULO: ${b? b.slice(0,60) : 'Auditamos el stack de growth de una empresa B2B (en vivo)'}\n\nGANCHO (0:00–0:15):\n"Encontramos 40 mil dólares al mes en fugas de presupuesto en menos de 15 minutos. Esto es lo que cualquier CMO debería revisar primero."\n\nGUION:\n• Intro — el mito del last-click (0:15)\n• Diagnóstico en vivo del funnel por etapas (1:30)\n• Dónde se fuga el presupuesto y por qué (5:00)\n• El marco Audit → Build → Operate aplicado (8:30)\n• Qué cambiar este lunes (12:00)\n\nCTA: "Si quieres que audite tu stack, link en la descripción."\n\nDESCRIPCIÓN: NRMD instala la estrategia, los sistemas y los motores de IA que convierten el gasto en marketing en una máquina de growth predecible.`,
-  facebook:b=>`${b||'¿Tu marketing es un sistema o una serie de apuestas?'}\n\nLa diferencia entre los equipos que escalan y los que se estancan no es el presupuesto — es tener un motor que hace ese presupuesto predecible.\n\nEstamos abriendo cupos para un webinar donde mostramos cómo instalar IA en tu motor de adquisición. Para empresas mid-market en México, EE. UU. y Canadá.\n\n👉 Regístrate (cupo limitado). Link abajo.`,
-  blog:b=>`# ${b? b.slice(0,70) : 'El operating system del growth predecible'}\n\n**TL;DR:** El problema rara vez es cuánto inviertes. Es la ausencia de un sistema que haga ese gasto rentable de forma repetible.\n\n## El costo oculto de operar por campañas\nCada año las empresas invierten más, pero los resultados siguen siendo inconsistentes. Cuando el marketing vive como una secuencia de campañas, cada resultado es un evento aislado — imposible de predecir y difícil de repetir.\n\n## Audit → Build → Operate\nEl marco NRMD convierte el caos en infraestructura:\n\n1. **Audit** — mapeamos dónde se fuga el presupuesto y qué etapas del funnel no están instrumentadas.\n2. **Build** — instalamos los sistemas y motores de IA que hacen rastreable cada peso.\n3. **Operate** — operamos el motor para que el growth deje de depender de la suerte.\n\n## Conclusión\nEl growth predecible empieza cuando dejas de adivinar y empiezas a medir el sistema completo.\n\n*¿Quieres una auditoría de tu stack? Agenda una llamada de estrategia.*`
+  linkedin:b=>`Most marketing teams don't have a budget problem. They have a system problem.\n\n${b||"Last-click tells you who closed — not what built the decision."}\n\nAt NRMD we model attribution stage by stage so every dollar invested is traceable to the result — not to the last ad someone happened to touch.\n\n→ 3 signs your marketing is still a series of campaigns and not a machine:\n1. You can't predict next quarter's outcome.\n2. Your best results are anecdotal, not repeatable.\n3. "It worked" means different things depending on who's reporting.\n\nPredictable growth starts when you stop guessing.\n\nWant an audit? Link in the comments. 👇\n\n#GrowthSystems #MarketingInfrastructure #B2B`,
+  instagram:b=>`📌 SAVE THIS for your next marketing meeting.\n\n${b||"3 signs your marketing isn't a system (yet)."}\n\n1️⃣ You can't predict next quarter\n2️⃣ Your wins aren't repeatable\n3️⃣ "It worked" = depends on who you ask\n\nPredictable growth isn't luck. It's infrastructure.\n\n— NRMD · the operating system for growth\n\n.\n.\n#marketing #growth #b2bmarketing #digitalstrategy #neuromedia`,
+  youtube:b=>`TITLE: ${b? b.slice(0,60) : "We audited a B2B company's growth stack (live)"}\n\nHOOK (0:00–0:15):\n"We found $40K a month in budget leaks in under 15 minutes. Here's what every CMO should check first."\n\nSCRIPT:\n• Intro — the last-click myth (0:15)\n• Live stage-by-stage funnel diagnosis (1:30)\n• Where the budget leaks and why (5:00)\n• The Audit → Build → Operate framework applied (8:30)\n• What to change this Monday (12:00)\n\nCTA: "If you want me to audit your stack, link in the description."\n\nDESCRIPTION: NRMD installs the strategy, systems, and AI engines that turn marketing spend into a predictable growth machine.`,
+  facebook:b=>`${b||"Is your marketing a system or a series of bets?"}\n\nThe difference between teams that scale and teams that stall isn't budget — it's having an engine that makes that budget predictable.\n\nWe're opening seats for a webinar on how to install AI into your acquisition engine. For mid-market companies in Mexico, the U.S., and Canada.\n\n👉 Register (limited seats). Link below.`,
+  blog:b=>`# ${b? b.slice(0,70) : "The operating system for predictable growth"}\n\n**TL;DR:** The problem is rarely how much you spend. It's the absence of a system that makes that spend profitable, repeatably.\n\n## The hidden cost of running on campaigns\nEvery year companies invest more, yet results stay inconsistent. When marketing lives as a sequence of campaigns, every result is an isolated event — impossible to predict and hard to repeat.\n\n## Audit → Build → Operate\nThe NRMD framework turns chaos into infrastructure:\n\n1. **Audit** — we map where the budget leaks and which funnel stages aren't instrumented.\n2. **Build** — we install the systems and AI engines that make every dollar traceable.\n3. **Operate** — we run the engine so growth stops depending on luck.\n\n## Conclusion\nPredictable growth starts when you stop guessing and start measuring the whole system.\n\n*Want an audit of your stack? Book a strategy call.*`
 };
 
 /* ===== generate (DUMMY) ===== */
 let isGen=false;
 function generate(){
   if(isGen)return;isGen=true;
-  const btn=$('#genBtn');btn.disabled=true;$('#genLabel').textContent='Generando…';
+  const btn=$('#genBtn');btn.disabled=true;$('#genLabel').textContent='Generating…';
   const brief=$('#brief').value.trim();
   const full=TEMPLATES[activeChan](brief);
   const body=$('#obody');
@@ -364,9 +369,9 @@ function generate(){
   const tick=()=>{
     i+=Math.max(2,Math.round(full.length/120));
     body.innerHTML=full.slice(0,i).replace(/\n/g,'<br>')+(i<full.length?'<span class="typing"></span>':'');
-    $('#charCount').textContent=Math.min(i,full.length)+' caracteres';
+    $('#charCount').textContent=Math.min(i,full.length)+' characters';
     if(i<full.length){requestAnimationFrame(()=>setTimeout(tick,speed));}
-    else{isGen=false;btn.disabled=false;$('#genLabel').textContent='Regenerar';}
+    else{isGen=false;btn.disabled=false;$('#genLabel').textContent='Regenerate';}
   };
   setTimeout(tick,260);
 }
@@ -378,19 +383,19 @@ $('#copyBtn').addEventListener('click',()=>{
   const b=$('#copyBtn');const o=b.innerHTML;b.innerHTML='✓ Copiado';setTimeout(()=>b.innerHTML=o,1400);
 });
 $('#schedBtn').addEventListener('click',()=>{
-  const b=$('#schedBtn');const o=b.innerHTML;b.innerHTML='✓ En cola';setTimeout(()=>b.innerHTML=o,1400);
+  const b=$('#schedBtn');const o=b.innerHTML;b.innerHTML='✓ Queued';setTimeout(()=>b.innerHTML=o,1400);
 });
 
 /* ===== RSS feed (dummy) ===== */
 const RSS=[
-  {src:'Lenny’s Newsletter',kind:'blog',color:COLORS.magenta,title:'Cómo los mejores equipos de growth estructuran su roadmap trimestral',time:'Hace 2 h'},
-  {src:'@andrewchen',kind:'account',color:COLORS.blue,title:'El verdadero motor del crecimiento no es el canal, es el loop',time:'Hace 4 h'},
-  {src:'First Round Review',kind:'blog',color:COLORS.coral,title:'El playbook de atribución que usan los CMOs que sí escalan',time:'Hace 7 h'},
-  {src:'Demand Curve',kind:'blog',color:COLORS.orange,title:'9 frameworks de copy que convierten en B2B (con ejemplos)',time:'Ayer'},
-  {src:'@april_dunford',kind:'account',color:COLORS.cyan,title:'Posicionamiento: por qué tu producto se siente "caro" y cómo arreglarlo',time:'Ayer'},
-  {src:'a16z · Growth',kind:'blog',color:COLORS.yellow,title:'IA aplicada al funnel de adquisición: qué funciona en 2026',time:'Hace 2 días'},
-  {src:'@shaanvp',kind:'account',color:COLORS.magenta,title:'El contenido que construye autoridad no vende — enseña',time:'Hace 2 días'},
-  {src:'HubSpot Blog',kind:'blog',color:COLORS.blue,title:'Benchmarks de engagement por red social para B2B (datos 2026)',time:'Hace 3 días'}
+  {src:'Lenny’s Newsletter',kind:'blog',color:COLORS.magenta,title:'How the best growth teams structure their quarterly roadmap',time:'2h ago'},
+  {src:'@andrewchen',kind:'account',color:COLORS.blue,title:'The real engine of growth isn\u2019t the channel, it\u2019s the loop',time:'4h ago'},
+  {src:'First Round Review',kind:'blog',color:COLORS.coral,title:'The attribution playbook used by CMOs who actually scale',time:'7h ago'},
+  {src:'Demand Curve',kind:'blog',color:COLORS.orange,title:'9 copy frameworks that convert in B2B (with examples)',time:'Yesterday'},
+  {src:'@april_dunford',kind:'account',color:COLORS.cyan,title:'Positioning: why your product feels "expensive" and how to fix it',time:'Yesterday'},
+  {src:'a16z · Growth',kind:'blog',color:COLORS.yellow,title:'AI applied to the acquisition funnel: what works in 2026',time:'2d ago'},
+  {src:'@shaanvp',kind:'account',color:COLORS.magenta,title:'Content that builds authority doesn\u2019t sell \u2014 it teaches',time:'2d ago'},
+  {src:'HubSpot Blog',kind:'blog',color:COLORS.blue,title:'Social engagement benchmarks for B2B (2026 data)',time:'3d ago'}
 ];
 let rssFilter='all';
 function renderRss(){
@@ -400,12 +405,12 @@ function renderRss(){
       <div class="src">
         <span class="av" style="background:${r.color}">${r.src.replace('@','').charAt(0).toUpperCase()}</span>
         ${r.src}
-        <span class="kind">${r.kind==='blog'?'Blog':'Cuenta'}</span>
+        <span class="kind">${r.kind==='blog'?'Blog':'Account'}</span>
       </div>
       <h5>${r.title}</h5>
       <div class="meta">
         <span class="time">${r.time}</span>
-        <span class="use">Usar como inspiración →</span>
+        <span class="use">Use as inspiration →</span>
       </div>
     </div>`).join('');
 }
@@ -417,18 +422,18 @@ $('#rssTabs').addEventListener('click',e=>{
 $('#rssList').addEventListener('click',e=>{
   const it=e.target.closest('.rss-item');if(!it)return;
   const r=RSS[+it.dataset.i];
-  $('#brief').value='Inspirado en "'+r.title+'" ('+r.src+'). Adáptalo al ángulo de NRMD: ';
+  $('#brief').value='Inspired by "'+r.title+'" ('+r.src+'). Adapt it to the NRMD angle: ';
   $('#brief').focus();
   window.scrollTo({top:0,behavior:'smooth'});
 });
 
 /* ===== quick widgets ===== */
 const WIDGETS=[
-  {c:'linkedin', desc:'Posts, carruseles y artículos de autoridad.', icon:'<rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 014 0v4"/>'},
-  {c:'instagram',desc:'Reels, carruseles y captions con hooks.', icon:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/>'},
-  {c:'youtube',  desc:'Guiones, títulos y descripciones SEO.', icon:'<rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/>'},
-  {c:'facebook', desc:'Posts de evento, registro y comunidad.', icon:'<rect x="2" y="2" width="20" height="20" rx="3"/><path d="M14 8h-1.5a1.5 1.5 0 00-1.5 1.5V12m-1 0h5m-3 0v6"/>'},
-  {c:'blog',     desc:'Notas largas, TL;DR y estructura SEO.', icon:'<path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/>'}
+  {c:'linkedin', desc:'Posts, carousels, and authority articles.', icon:'<rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 014 0v4"/>'},
+  {c:'instagram',desc:'Reels, carousels, and captions with hooks.', icon:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/>'},
+  {c:'youtube',  desc:'Scripts, titles, and SEO descriptions.', icon:'<rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/>'},
+  {c:'facebook', desc:'Event, registration, and community posts.', icon:'<rect x="2" y="2" width="20" height="20" rx="3"/><path d="M14 8h-1.5a1.5 1.5 0 00-1.5 1.5V12m-1 0h5m-3 0v6"/>'},
+  {c:'blog',     desc:'Long-form articles, TL;DR, and SEO structure.', icon:'<path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/>'}
 ];
 function renderWidgets(){
   $('#widgets').innerHTML=WIDGETS.map(w=>{const c=CHANNELS[w.c];return`
@@ -438,7 +443,7 @@ function renderWidgets(){
       </div>
       <h4>${c.name}</h4>
       <p>${w.desc}</p>
-      <span class="go" style="color:${c.color}">Abrir composer
+      <span class="go" style="color:${c.color}">Open composer
         <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </div>`}).join('');
 }
@@ -450,12 +455,12 @@ $('#widgets').addEventListener('click',e=>{
 
 /* ===== recent (dummy) ===== */
 const RECENT=[
-  {c:'linkedin', st:'pub',  stl:'Publicado', title:'7 métricas que un CMO debería revisar cada lunes', prev:'Carrusel guardable listo para tu rutina semanal.', when:'Hoy · 09:14', m:'18.7K vistas'},
-  {c:'instagram',st:'pub',  stl:'Publicado', title:'3 señales de que tu marketing no es un sistema', prev:'Reel de 22s con hook directo.', when:'Hoy · 08:02', m:'38.9K vistas'},
-  {c:'blog',     st:'sch',  stl:'Programado',title:'El operating system del growth predecible', prev:'Nota larga con el marco Audit → Build → Operate.', when:'Mañana · 07:00', m:'En cola'},
-  {c:'youtube',  st:'draft',stl:'Borrador',  title:'Auditamos un stack de growth B2B en vivo', prev:'Guion de 14 min, pendiente de revisión.', when:'Borrador', m:'—'},
-  {c:'facebook', st:'sch',  stl:'Programado',title:'Webinar: instalar IA en tu motor de adquisición', prev:'Post de registro para MX, US y CA.', when:'Jue · 11:30', m:'En cola'},
-  {c:'linkedin', st:'pub',  stl:'Publicado', title:'Cómo medir ROAS real con un funnel de 6 etapas', prev:'Artículo sobre atribución por etapa.', when:'Ayer · 16:40', m:'12.4K vistas'}
+  {c:'linkedin', st:'pub',  stl:'Published', title:'7 metrics a CMO should review every Monday', prev:'Saveable carousel ready for your weekly routine.', when:'Today · 09:14', m:'18.7K views'},
+  {c:'instagram',st:'pub',  stl:'Published', title:'3 signs your marketing isn\u2019t a system', prev:'22s reel with a direct hook.', when:'Today · 08:02', m:'38.9K views'},
+  {c:'blog',     st:'sch',  stl:'Scheduled',title:'The operating system for predictable growth', prev:'Long-form article with the Audit → Build → Operate framework.', when:'Tomorrow · 07:00', m:'Queued'},
+  {c:'youtube',  st:'draft',stl:'Draft',     title:'We audit a B2B growth stack live', prev:'14-min script, pending review.', when:'Draft', m:'—'},
+  {c:'facebook', st:'sch',  stl:'Scheduled',title:'Webinar: installing AI into your acquisition engine', prev:'Registration post for MX, US & CA.', when:'Thu · 11:30', m:'Queued'},
+  {c:'linkedin', st:'pub',  stl:'Published', title:'How to measure real ROAS with a 6-stage funnel', prev:'Article on stage-by-stage attribution.', when:'Yesterday · 16:40', m:'12.4K views'}
 ];
 function renderRecent(){
   $('#recent').innerHTML=RECENT.map(r=>{const c=CHANNELS[r.c];return`

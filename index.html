@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NRMD · Posicionamiento Digital</title>
+<title>NRMD · Digital Positioning</title>
+<!-- Favicon (served from the main site) -->
+<link rel="icon" type="image/svg+xml" href="https://nrmd.io/assets/img/brain.svg">
+<link rel="icon" type="image/png" href="https://nrmd.io/assets/img/favicon.png">
+<link rel="apple-touch-icon" href="https://nrmd.io/assets/img/brain.png">
 <!--
   platform.nrmd.io — Dashboard / Index
   Construido sobre el sistema de marca NRMD v1.0.
   Tema claro (fondo blanco) para trabajo del equipo + contraste alto.
   Secciones puntuales en near-black para variedad.
 
-  DATA: todo vive en el objeto NRMD_DATA (más abajo). Es dummy.
-  Para conectar un módulo real, reemplaza la fuente de ese objeto y
-  vuelve a llamar la función render correspondiente.
+  DATA: everything lives in the NRMD_DATA object (below). It's dummy.
+  To connect a real module, replace that object's source and
+  call the corresponding render function again.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,7 +62,8 @@ header.nav{
 }
 .nav-inner{display:flex;align-items:center;gap:28px;height:64px;max-width:1360px;margin:0 auto;padding:0 28px}
 .brand{display:flex;align-items:center;gap:11px;text-decoration:none}
-.brand .mark{width:30px;height:30px;flex:0 0 auto}
+.brand .mark{display:block;width:30px;height:30px;min-width:30px;flex:0 0 auto;object-fit:contain}
+.brand .mark[alt]{font-size:0;color:transparent}
 .brand .word{font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.01em;color:var(--ink)}
 .brand .word b{font-weight:800}
 .nav-links{display:flex;gap:4px;margin-left:8px}
@@ -293,15 +298,15 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 0 50px}
     </a>
     <nav class="nav-links">
       <a href="#" class="active">Dashboard</a>
-      <a href="/create">Crear</a>
-      <a href="#publications">Publicaciones</a>
+      <a href="/create">Create</a>
+      <a href="#publications">Publications</a>
       <a href="#cohorts">Cohorts</a>
     </nav>
     <div class="nav-right">
-      <span class="pill"><span class="dot-live"></span>EN VIVO</span>
+      <span class="pill" id="dataPill"><span class="dot-live"></span>LIVE</span>
       <a class="btn-create" href="/create">
         <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        Generar contenido
+        Generate content
       </a>
       <div class="avatar">SN</div>
     </div>
@@ -313,9 +318,9 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 0 50px}
   <div class="page-head">
     <div class="row">
       <div>
-        <span class="eyebrow">PLATFORM · POSICIONAMIENTO DIGITAL</span>
+        <span class="eyebrow">PLATFORM · DIGITAL POSITIONING</span>
         <h1>Command Center</h1>
-        <p>Una sola vista del posicionamiento de NRMD a través de redes, blog y sitio. Tráfico, interacción, cohorts y publicaciones recientes.</p>
+        <p>A single view of NRMD’s positioning across social, blog, and site. Traffic, engagement, cohorts, and recent publications.</p>
       </div>
       <div class="controls">
         <div class="seg" id="rangeSeg">
@@ -325,10 +330,10 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 0 50px}
           <button data-r="365">12M</button>
         </div>
         <select class="select" id="regionSel">
-          <option>Todas las regiones</option>
-          <option>México</option>
-          <option>Estados Unidos</option>
-          <option>Canadá</option>
+          <option>All regions</option>
+          <option>Mexico</option>
+          <option>United States</option>
+          <option>Canada</option>
         </select>
       </div>
     </div>
@@ -343,11 +348,11 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 0 50px}
       <div class="card-h">
         <div class="t">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="url(#nrmd-grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-6 4 3 6-8"/><path d="M3 21h18"/></svg></span>
-          <div><h3>Tráfico del sitio</h3><div class="sub">Sesiones · período actual vs. anterior</div></div>
+          <div><h3>Site traffic</h3><div class="sub">Sessions · current vs. previous period</div></div>
         </div>
         <div class="legend" style="padding:0">
-          <span><i style="background:var(--blue)"></i>Actual</span>
-          <span><i class="dash"></i>Anterior</span>
+          <span><i style="background:var(--blue)"></i>Current</span>
+          <span><i class="dash"></i>Previous</span>
         </div>
       </div>
       <div class="chart-body">
@@ -359,7 +364,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 0 50px}
       <div class="card-h">
         <div class="t">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="url(#nrmd-grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 4"/></svg></span>
-          <div><h3>Fuentes de tráfico</h3><div class="sub">Por canal</div></div>
+          <div><h3>Traffic sources</h3><div class="sub">By channel</div></div>
         </div>
       </div>
       <div class="donut-wrap">
@@ -371,22 +376,22 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 0 50px}
 
   <!-- ============ NETWORK PERFORMANCE ============ -->
   <div class="section-label">
-    <span class="eyebrow">RENDIMIENTO POR RED</span><span class="line"></span>
+    <span class="eyebrow">CHANNEL PERFORMANCE</span><span class="line"></span>
   </div>
   <div class="grid g-2-1 section">
     <div class="card">
       <div class="card-h">
         <div class="t">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="url(#nrmd-grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg></span>
-          <div><h3>Métricas por canal</h3><div class="sub">Seguidores · alcance · interacción</div></div>
+          <div><h3>Metrics by channel</h3><div class="sub">Followers · reach · engagement</div></div>
         </div>
       </div>
       <div class="table-scroll">
         <table class="nets">
           <thead>
             <tr>
-              <th>Canal</th><th>Seguidores</th><th>Δ Crec.</th><th>Posts</th>
-              <th>Alcance prom.</th><th>Engagement</th><th>Tendencia</th>
+              <th>Channel</th><th>Followers</th><th>Δ Growth</th><th>Posts</th>
+              <th>Avg. reach</th><th>Engagement</th><th>Trend</th>
             </tr>
           </thead>
           <tbody id="netBody"></tbody>
@@ -398,7 +403,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 0 50px}
       <div class="card-h">
         <div class="t">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="url(#nrmd-grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
-          <div><h3>Comparativa de interacción</h3><div class="sub">Tasa de engagement</div></div>
+          <div><h3>Engagement comparison</h3><div class="sub">Engagement rate</div></div>
         </div>
       </div>
       <div class="bars" id="cmpBars"></div>
@@ -407,16 +412,16 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 0 50px}
 
   <!-- ============ PER-NETWORK DETAIL ============ -->
   <div class="section-label" id="pernet">
-    <span class="eyebrow">DESEMPEÑO POR RED SOCIAL</span><span class="line"></span>
+    <span class="eyebrow">PERFORMANCE BY SOCIAL NETWORK</span><span class="line"></span>
   </div>
   <div class="pernet-grid" id="perNet"></div>
 
   <!-- ============ COHORT (dark) ============ -->
   <div class="section" id="cohorts">
     <div class="dark-sec">
-      <span class="eyebrow">ANÁLISIS DE COHORTS</span>
-      <h2>Retención de audiencia por cohorte de adquisición</h2>
-      <p class="desc">% de seguidores que siguen interactuando tras N semanas, agrupados por el mes en que llegaron. Más saturado = mejor retención.</p>
+      <span class="eyebrow">COHORT ANALYSIS</span>
+      <h2>Audience retention by acquisition cohort</h2>
+      <p class="desc">% of followers still engaging after N weeks, grouped by the month they arrived. More saturated = better retention.</p>
       <div class="table-scroll">
         <table class="cohort" id="cohortTable"></table>
       </div>
@@ -425,7 +430,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 0 50px}
 
   <!-- ============ PUBLICATIONS ============ -->
   <div class="section-label" id="publications">
-    <span class="eyebrow">PUBLICACIONES RECIENTES</span><span class="line"></span>
+    <span class="eyebrow">RECENT PUBLICATIONS</span><span class="line"></span>
   </div>
   <div class="tabs" id="pubTabs"></div>
   <div class="posts" id="posts"></div>
@@ -434,11 +439,11 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 0 50px}
   <div class="cta">
     <div class="ct-l">
       <span class="eyebrow" style="color:rgba(255,255,255,.5)">PLATFORM.NRMD.IO/CREATE</span>
-      <h2>¿Listo para crear el siguiente lote?</h2>
-      <p>Genera publicaciones por red, notas de blog y descubre inspiración desde tu feed de RSS — todo en el estudio de generación.</p>
+      <h2>Ready to create the next batch?</h2>
+      <p>Generate posts by network, blog articles, and discover inspiration from your RSS feed — all in the generation studio.</p>
     </div>
     <a class="btn-lg" href="/create">
-      Ir al estudio de generación
+      Go to the generation studio
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
   </div>
@@ -447,8 +452,8 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 0 50px}
 <!-- ============ FOOTER ============ -->
 <footer>
   <div class="wrap foot">
-    <div>© NRMD · Neuromedia — Marketing infrastructure for Mexico, the U.S. & Canada.</div>
-    <div class="mono">DATA: DUMMY · v1.0 · ÚLTIMA SYNC 2 MIN</div>
+    <div>© NRMD · Neuromedia — Marketing infrastructure for Mexico, the U.S. &amp; Canada.</div>
+    <div class="mono" id="syncTag">DATA: DEMO · CONECTA GA4 EN CONFIG</div>
   </div>
 </footer>
 
@@ -456,28 +461,57 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 0 50px}
 
 <script>
 /* =====================================================================
-   NRMD_DATA — fuente única de verdad (dummy).
+   NRMD_DATA — single source of truth (dummy).
    Para conectar real: reemplaza cada bloque y vuelve a llamar render().
    ===================================================================== */
 const COLORS={cyan:'#00D4FF',blue:'#0066FF',magenta:'#FF00B8',coral:'#FF4D6D',orange:'#FF8A00',yellow:'#FFC700'};
 
-/* Mapeo cromático de canal (sistema de marca, 6 colores = 6 entidades) */
+/* =====================================================================
+   CONFIG · CONEXIÓN DE DATOS EN VIVO
+   ---------------------------------------------------------------------
+   ga4Endpoint: URL del webhook de n8n que devuelve el JSON de GA4.
+                Leave it as '' to stay in DEMO mode (dummy data).
+                Ej: 'https://TU-N8N/webhook/nrmd-ga4'
+   El dashboard hace: fetch(ga4Endpoint + '?range=30d')
+   y espera el contrato JSON documentado en CONNECT.md.
+   If the endpoint fails or is empty, it falls back to demo data without breaking.
+   ===================================================================== */
+const CONFIG={
+  ga4Endpoint:'',      // ← paste the n8n webhook URL here
+  defaultRange:'30'
+};
+
+/* Maps GA4 channel groups (returned in English) to brand label + color */
+const GA4_CHANNEL_STYLE={
+  'Organic Search':{label:'Organic Search',color:COLORS.cyan},
+  'Direct'        :{label:'Directo',          color:COLORS.blue},
+  'Organic Social':{label:'Social',           color:COLORS.magenta},
+  'Paid Social'   :{label:'Social (pago)',    color:COLORS.magenta},
+  'Referral'      :{label:'Referido',         color:COLORS.orange},
+  'Email'         :{label:'Email',            color:COLORS.yellow},
+  'Paid Search'   :{label:'Paid Search',      color:COLORS.coral},
+  'Display'       :{label:'Display',          color:COLORS.coral},
+  'Unassigned'    :{label:'Sin asignar',      color:COLORS.orange}
+};
+const PALETTE=[COLORS.cyan,COLORS.blue,COLORS.magenta,COLORS.coral,COLORS.orange,COLORS.yellow];
+
+/* Channel color mapping (brand system, 6 colors = 6 entities) */
 const CHANNELS={
   linkedin :{name:'LinkedIn', color:COLORS.blue},
   youtube  :{name:'YouTube',  color:COLORS.coral},
   instagram:{name:'Instagram',color:COLORS.magenta},
   facebook :{name:'Facebook', color:COLORS.cyan},
   blog     :{name:'Blog',     color:COLORS.orange},
-  site     :{name:'Sitio web',color:COLORS.yellow}
+  site     :{name:'Website',color:COLORS.yellow}
 };
 
 const NRMD_DATA={
   kpis:[
-    {label:'Alcance total', color:COLORS.cyan,  value:'1.84M', delta:+18.4, spark:[12,14,13,17,16,19,22,21,24,26,25,29]},
-    {label:'Engagement prom.',color:COLORS.magenta,value:'4.7%', delta:+0.6, spark:[3.1,3.4,3.2,3.8,3.6,4.0,4.2,4.1,4.4,4.5,4.6,4.7]},
-    {label:'Sesiones web', color:COLORS.yellow,value:'92.3K', delta:+12.1, spark:[60,64,62,70,68,74,79,77,83,86,88,92]},
-    {label:'Crec. neto seg.',color:COLORS.blue, value:'+11.2K',delta:+24.0, spark:[4,5,5,7,6,8,9,9,10,10,11,11]},
-    {label:'Contenido publicado',color:COLORS.orange,value:'68', delta:+9.7, spark:[40,44,46,50,52,55,58,60,62,64,66,68]}
+    {label:'Total reach', color:COLORS.cyan,  value:'1.84M', delta:+18.4, spark:[12,14,13,17,16,19,22,21,24,26,25,29]},
+    {label:'Avg. engagement',color:COLORS.magenta,value:'4.7%', delta:+0.6, spark:[3.1,3.4,3.2,3.8,3.6,4.0,4.2,4.1,4.4,4.5,4.6,4.7]},
+    {label:'Web sessions', color:COLORS.yellow,value:'92.3K', delta:+12.1, spark:[60,64,62,70,68,74,79,77,83,86,88,92]},
+    {label:'Net follower growth',color:COLORS.blue, value:'+11.2K',delta:+24.0, spark:[4,5,5,7,6,8,9,9,10,10,11,11]},
+    {label:'Content published',color:COLORS.orange,value:'68', delta:+9.7, spark:[40,44,46,50,52,55,58,60,62,64,66,68]}
   ],
   /* 30 puntos de sesiones diarias: actual + anterior */
   traffic:{
@@ -486,10 +520,10 @@ const NRMD_DATA={
     previous:[1900,1980,1850,2120,2240,2480,2390,2310,2520,2680,2590,2750,2880,2790,2940,3120,3060,3240,3380,3320,3520,3680,3610,3800,3960,3910,4080,4220,4180,4360]
   },
   sources:[
-    {name:'Búsqueda orgánica',color:COLORS.cyan,   pct:34},
+    {name:'Organic Search',color:COLORS.cyan,   pct:34},
     {name:'Social',           color:COLORS.magenta,pct:27},
-    {name:'Directo',          color:COLORS.blue,   pct:18},
-    {name:'Referido',         color:COLORS.orange, pct:13},
+    {name:'Direct',           color:COLORS.blue,   pct:18},
+    {name:'Referral',         color:COLORS.orange, pct:13},
     {name:'Email',            color:COLORS.yellow, pct:8}
   ],
   networks:[
@@ -499,49 +533,49 @@ const NRMD_DATA={
     {ch:'facebook', followers:'27.4K', growth:+1.2, posts:14, reach:'128K', er:2.4, trend:[2.9,2.7,2.6,2.8,2.5,2.6,2.4,2.5,2.4,2.3,2.4,2.4]},
     {ch:'blog',     followers:'12.6K', growth:+11.5,posts:8,  reach:'74K',  er:7.9, trend:[5.1,5.6,6.0,6.4,6.8,7.0,7.2,7.4,7.6,7.7,7.8,7.9]}
   ],
-  /* cohort: filas = mes adquisición, columnas = semanas 0..8, valores = % retención */
+  /* cohort: rows = acquisition month, columns = weeks 0..8, values = % retention */
   cohort:{
     weeks:['S0','S1','S2','S3','S4','S5','S6','S7','S8'],
     rows:[
-      {m:'Dic 25', size:'2.1K', vals:[100,72,61,54,49,45,42,40,38]},
-      {m:'Ene 26', size:'2.8K', vals:[100,75,64,58,53,49,46,44,null]},
+      {m:'Dec 25', size:'2.1K', vals:[100,72,61,54,49,45,42,40,38]},
+      {m:'Jan 26', size:'2.8K', vals:[100,75,64,58,53,49,46,44,null]},
       {m:'Feb 26', size:'3.2K', vals:[100,78,68,62,57,53,50,null,null]},
       {m:'Mar 26', size:'3.9K', vals:[100,81,71,65,60,56,null,null,null]},
-      {m:'Abr 26', size:'4.4K', vals:[100,83,74,68,63,null,null,null,null]},
+      {m:'Apr 26', size:'4.4K', vals:[100,83,74,68,63,null,null,null,null]},
       {m:'May 26', size:'5.1K', vals:[100,85,77,null,null,null,null,null,null]}
     ]
   },
   posts:[
-    {ch:'linkedin', type:'Artículo', time:'Hace 3 h', title:'Cómo medir ROAS real cuando tu funnel tiene 6 etapas', excerpt:'Desglosamos la atribución por etapa y por qué el last-click te miente.', stats:{views:'12.4K',likes:842,comments:96,ctr:'3.1%'}},
-    {ch:'instagram',type:'Reel', time:'Hace 6 h', title:'3 señales de que tu marketing no es un sistema', excerpt:'Reel de 22s que ya rompió tu promedio de saves.', stats:{views:'38.9K',likes:2140,comments:208,saves:512}},
-    {ch:'youtube',  type:'Video', time:'Ayer', title:'Auditamos el stack de growth de una empresa B2B en vivo', excerpt:'14 minutos donde encontramos $40K/mes en fugas de presupuesto.', stats:{views:'9.1K',likes:614,comments:73,watch:'58%'}},
-    {ch:'blog',     type:'Nota', time:'Hace 2 días', title:'El operating system del growth predecible: marco completo', excerpt:'Audit → Build → Operate. La metodología NRMD documentada.', stats:{reads:'4.2K',likes:188,shares:64,time:'7m'}},
-    {ch:'facebook', type:'Post', time:'Hace 2 días', title:'Webinar: instalar IA en tu motor de adquisición', excerpt:'Registro abierto para mid-market en MX, US y CA.', stats:{reach:'21.3K',likes:430,comments:51,clicks:312}},
-    {ch:'linkedin', type:'Carrusel', time:'Hace 3 días', title:'7 métricas que un CMO debería revisar cada lunes', excerpt:'Carrusel guardable, listo para tu rutina semanal.', stats:{views:'18.7K',likes:1290,comments:142,ctr:'4.4%'}}
+    {ch:'linkedin', type:'Article', time:'3h ago', title:'How to measure real ROAS when your funnel has 6 stages', excerpt:'We break down stage-by-stage attribution and why last-click lies to you.', stats:{views:'12.4K',likes:842,comments:96,ctr:'3.1%'}},
+    {ch:'instagram',type:'Reel', time:'6h ago', title:'3 signs your marketing isn\u2019t a system', excerpt:'22s reel that already broke your saves average.', stats:{views:'38.9K',likes:2140,comments:208,saves:512}},
+    {ch:'youtube',  type:'Video', time:'Yesterday', title:'We audit a B2B company\u2019s growth stack live', excerpt:'14 minutes where we found $40K/mo in budget leaks.', stats:{views:'9.1K',likes:614,comments:73,watch:'58%'}},
+    {ch:'blog',     type:'Article', time:'2d ago', title:'The operating system for predictable growth: full framework', excerpt:'Audit → Build → Operate. The NRMD methodology documented.', stats:{reads:'4.2K',likes:188,shares:64,time:'7m'}},
+    {ch:'facebook', type:'Post', time:'2d ago', title:'Webinar: installing AI into your acquisition engine', excerpt:'Registration open for mid-market in MX, US & CA.', stats:{reach:'21.3K',likes:430,comments:51,clicks:312}},
+    {ch:'linkedin', type:'Carousel', time:'3d ago', title:'7 metrics a CMO should review every Monday', excerpt:'Saveable carousel, ready for your weekly routine.', stats:{views:'18.7K',likes:1290,comments:142,ctr:'4.4%'}}
   ],
-  /* Desempeño detallado por red — cada plataforma con sus KPIs propios.
-     `metric` = etiqueta de la serie del mini-chart; `base/growth/vol` la generan (dummy). */
+  /* Detailed performance by network — each platform with its own KPIs.
+     `metric` = mini-chart series label; `base/growth/vol` generate it (dummy). */
   perNetwork:[
     {ch:'linkedin', handle:'@neuromedia', followers:'48.2K', folDelta:+6.4,
-     metric:'Impresiones', base:34000, growth:.55, vol:2600,
-     kpis:[{l:'Impresiones',v:'1.24M',d:+22.1},{l:'Engagement',v:'5.8%',d:+0.7},{l:'Clics',v:'18.3K',d:+14.2},{l:'Reacciones',v:'9.1K',d:+9.8}],
-     top:'7 métricas que un CMO debería revisar cada lunes'},
+     metric:'Impressions', base:34000, growth:.55, vol:2600,
+     kpis:[{l:'Impressions',v:'1.24M',d:+22.1},{l:'Engagement',v:'5.8%',d:+0.7},{l:'Clicks',v:'18.3K',d:+14.2},{l:'Reactions',v:'9.1K',d:+9.8}],
+     top:'7 metrics a CMO should review every Monday'},
     {ch:'youtube', handle:'NRMD Growth', followers:'21.7K', folDelta:+9.1,
-     metric:'Vistas', base:5200, growth:.7, vol:900,
-     kpis:[{l:'Vistas',v:'186K',d:+27.4},{l:'Watch time',v:'4.1K h',d:+19.0},{l:'Retención',v:'58%',d:+3.2},{l:'CTR miniatura',v:'6.7%',d:+1.1}],
-     top:'Auditamos un stack de growth B2B en vivo'},
+     metric:'Views', base:5200, growth:.7, vol:900,
+     kpis:[{l:'Views',v:'186K',d:+27.4},{l:'Watch time',v:'4.1K h',d:+19.0},{l:'Retention',v:'58%',d:+3.2},{l:'Thumb. CTR',v:'6.7%',d:+1.1}],
+     top:'We audit a B2B growth stack live'},
     {ch:'instagram', handle:'@nrmd.io', followers:'33.9K', folDelta:+4.8,
-     metric:'Alcance', base:7800, growth:.48, vol:1500,
-     kpis:[{l:'Alcance',v:'241K',d:+12.6},{l:'Interacciones',v:'14.2K',d:+8.4},{l:'Guardados',v:'3.4K',d:+18.9},{l:'Reels plays',v:'128K',d:+31.0}],
-     top:'3 señales de que tu marketing no es un sistema'},
+     metric:'Reach', base:7800, growth:.48, vol:1500,
+     kpis:[{l:'Reach',v:'241K',d:+12.6},{l:'Interactions',v:'14.2K',d:+8.4},{l:'Saves',v:'3.4K',d:+18.9},{l:'Reels plays',v:'128K',d:+31.0}],
+     top:'3 signs your marketing isn\u2019t a system'},
     {ch:'facebook', handle:'NRMD · Neuromedia', followers:'27.4K', folDelta:+1.2,
-     metric:'Alcance', base:4200, growth:.18, vol:1100,
-     kpis:[{l:'Alcance',v:'128K',d:+2.1},{l:'Interacciones',v:'5.6K',d:-1.4},{l:'Clics enlace',v:'2.9K',d:+4.0},{l:'Visitas página',v:'7.1K',d:+3.3}],
-     top:'Webinar: instalar IA en tu motor de adquisición'},
+     metric:'Reach', base:4200, growth:.18, vol:1100,
+     kpis:[{l:'Reach',v:'128K',d:+2.1},{l:'Interactions',v:'5.6K',d:-1.4},{l:'Link clicks',v:'2.9K',d:+4.0},{l:'Page visits',v:'7.1K',d:+3.3}],
+     top:'Webinar: installing AI into your acquisition engine'},
     {ch:'blog', handle:'nrmd.io/blog', followers:'12.6K', folDelta:+11.5,
-     metric:'Lecturas', base:1800, growth:.62, vol:420,
-     kpis:[{l:'Lecturas',v:'74K',d:+24.7},{l:'Tiempo prom.',v:'4m 38s',d:+12.0},{l:'Tasa rebote',v:'38%',d:-6.5,inv:true},{l:'Subs. newsletter',v:'+1.4K',d:+28.0}],
-     top:'El operating system del growth predecible'}
+     metric:'Reads', base:1800, growth:.62, vol:420,
+     kpis:[{l:'Reads',v:'74K',d:+24.7},{l:'Avg. time',v:'4m 38s',d:+12.0},{l:'Bounce rate',v:'38%',d:-6.5,inv:true},{l:'Newsletter subs',v:'+1.4K',d:+28.0}],
+     top:'The operating system for predictable growth'}
   ]
 };
 
@@ -568,7 +602,7 @@ function renderKpis(){
       <div class="val">${k.value}</div>
       <div class="meta">
         <span class="chg ${k.delta>=0?'pos':'neg'}">${arrow(k.delta)} ${sign(k.delta)}${Math.abs(k.delta)}%</span>
-        <span>vs. período ant.</span>
+        <span>vs. prev. period</span>
       </div>
       <div class="spark">${sparkline(k.spark,k.color)}</div>
     </div>`).join('');
@@ -614,7 +648,7 @@ function renderTraffic(){
       const i=+c.dataset.i, cx=+c.getAttribute('cx'), cy=+c.getAttribute('cy');
       dot.setAttribute('cx',cx);dot.setAttribute('cy',cy);dot.style.opacity=1;
       const r=c.getBoundingClientRect();
-      tip.innerHTML=`Día ${d.labels[i]} · <b>${d.current[i].toLocaleString()}</b> sesiones`;
+      tip.innerHTML=`Day ${d.labels[i]} · <b>${d.current[i].toLocaleString()}</b> sessions`;
       tip.style.opacity=1;tip.style.left=(r.left+window.scrollX)+'px';tip.style.top=(r.top+window.scrollY-38)+'px';
     });
     c.addEventListener('mouseleave',()=>{tip.style.opacity=0;dot.style.opacity=0;});
@@ -632,7 +666,7 @@ function renderDonut(){
   $('#donut').innerHTML=`<svg viewBox="0 0 ${sz} ${sz}" width="150" height="150">
     ${segs}
     <text x="${sz/2}" y="${sz/2-4}" text-anchor="middle" class="donut-center" style="font-size:26px;fill:var(--ink)">100%</text>
-    <text x="${sz/2}" y="${sz/2+14}" text-anchor="middle" style="font-size:9px;font-family:var(--mono);fill:var(--ink-35);letter-spacing:.1em">CANALES</text>
+    <text x="${sz/2}" y="${sz/2+14}" text-anchor="middle" style="font-size:9px;font-family:var(--mono);fill:var(--ink-35);letter-spacing:.1em">CHANNELS</text>
   </svg>`;
   $('#donutLegend').innerHTML=data.map(s=>`
     <div class="li"><span class="d" style="background:${s.color}"></span>
@@ -645,7 +679,7 @@ function renderNets(){
   $('#netBody').innerHTML=NRMD_DATA.networks.map(n=>{const c=CHANNELS[n.ch];return`
     <tr>
       <td><div class="net-name"><span class="d" style="background:${c.color}"></span>
-        <div>${c.name}<small>${n.posts} posts / período</small></div></div></td>
+        <div>${c.name}<small>${n.posts} posts / period</small></div></div></td>
       <td>${n.followers}</td>
       <td><span class="chg-tag ${n.growth>=0?'pos':'neg'}">${arrow(n.growth)} ${Math.abs(n.growth)}%</span></td>
       <td>${n.posts}</td>
@@ -671,7 +705,7 @@ function renderBars(){
 /* ===================== Cohort heatmap ===================== */
 function renderCohort(){
   const co=NRMD_DATA.cohort;
-  let head='<tr><th style="text-align:left">Cohorte</th>'+co.weeks.map(w=>`<th>${w}</th>`).join('')+'</tr>';
+  let head='<tr><th style="text-align:left">Cohort</th>'+co.weeks.map(w=>`<th>${w}</th>`).join('')+'</tr>';
   let body=co.rows.map(r=>{
     const cells=r.vals.map(v=>{
       if(v===null)return`<td class="cell empty">·</td>`;
@@ -679,7 +713,7 @@ function renderCohort(){
       const a=0.12+0.88*(v/100);
       return`<td><div class="cell" style="background:${hex2rgba(COLORS.cyan, a)}" title="${v}%">${v}%</div></td>`;
     }).join('');
-    return`<tr><td class="lab">${r.m}<small>${r.size} nuevos</small></td>${cells}</tr>`;
+    return`<tr><td class="lab">${r.m}<small>${r.size} new</small></td>${cells}</tr>`;
   }).join('');
   $('#cohortTable').innerHTML=head+body;
 }
@@ -727,7 +761,7 @@ function renderPosts(filter='all'){
     </article>`}).join('');
 }
 function renderTabs(){
-  const tabs=[['all','Todas','#0B0B12'],...Object.entries(CHANNELS).filter(([k])=>k!=='site').map(([k,v])=>[k,v.name,v.color])];
+  const tabs=[['all','All','#0B0B12'],...Object.entries(CHANNELS).filter(([k])=>k!=='site').map(([k,v])=>[k,v.name,v.color])];
   $('#pubTabs').innerHTML=tabs.map((t,i)=>`
     <button class="tab ${i===0?'on':''}" data-f="${t[0]}">
       ${t[0]!=='all'?`<span class="d" style="background:${t[2]}"></span>`:''}${t[1]}
@@ -754,7 +788,7 @@ function series(base,growth,vol,n=30,seed=1){
     out.push(Math.max(0,Math.round(base*(1+growth*i/n)+noise)));
   }return out;
 }
-/* mini área con relleno de gradiente del color de la red */
+/* mini area chart with a gradient fill in the network color */
 function miniArea(data,color,id){
   const W=360,H=72,pad={t:16,r:8,b:6,l:8};
   const iw=W-pad.l-pad.r, ih=H-pad.t-pad.b;
@@ -793,7 +827,7 @@ function renderPerNetwork(){
           <div><div class="nm">${c.name}</div><div class="hd">${n.handle}</div></div>
         </div>
         <div class="pn-fol">
-          <div class="l">Seguidores</div>
+          <div class="l">Followers</div>
           <div class="v">${n.followers}</div>
           <div class="chg ${n.folDelta>=0?'pos':'neg'}">${arrow(n.folDelta)} ${sign(n.folDelta)}${Math.abs(n.folDelta)}%</div>
         </div>
@@ -804,17 +838,88 @@ function renderPerNetwork(){
     </div>`}).join('');
 }
 
-/* ===================== range toggle (cosmetic re-render) ===================== */
+/* =====================================================================
+   LIVE DATA LAYER (GA4 via n8n)
+   ===================================================================== */
+const fmtNum=n=>{n=+n;
+  if(n>=1e6)return (n/1e6).toFixed(2).replace(/\.?0+$/,'')+'M';
+  if(n>=1e3)return (n/1e3).toFixed(1).replace(/\.0$/,'')+'K';
+  return Math.round(n).toLocaleString();};
+const downsample=(arr,n)=>{if(!arr||arr.length<=n)return arr||[];const s=arr.length/n;
+  return Array.from({length:n},(_,i)=>arr[Math.floor(i*s)]);};
+function timeAgo(iso){const t=new Date(iso);if(isNaN(t))return 'ahora';
+  const m=Math.round((Date.now()-t)/60000);
+  if(m<1)return 'ahora';if(m<60)return m+' MIN';const h=Math.round(m/60);
+  if(h<24)return h+' H';return Math.round(h/24)+' D';}
+
+function setDataStatus(state,updatedAt){
+  const pill=$('#dataPill'),sync=$('#syncTag');if(!pill)return;
+  if(state==='live'){
+    pill.innerHTML='<span class="dot-live"></span>EN VIVO';
+    if(sync)sync.textContent='DATA: GA4 · ÚLTIMA SYNC '+(updatedAt?timeAgo(updatedAt):'AHORA');
+  }else if(state==='loading'){
+    pill.innerHTML='<span class="dot-live" style="background:var(--orange);box-shadow:0 0 0 3px rgba(255,138,0,.16)"></span>SINCRONIZANDO';
+  }else{ // demo
+    pill.innerHTML='<span class="dot-live" style="background:var(--ink-35);box-shadow:none"></span>DEMO';
+    if(sync)sync.textContent='DATA: DEMO · CONECTA GA4 EN CONFIG';
+  }
+}
+
+/* Mapea el JSON de GA4 (contrato CONNECT.md) sobre NRMD_DATA y re-renderiza */
+function applyGA4(d){
+  if(d&&d.sessions){
+    const s=d.sessions;
+    const k=NRMD_DATA.kpis.find(x=>/sesiones/i.test(x.label));
+    if(k){
+      if(s.total!=null)k.value=fmtNum(s.total);
+      if(typeof s.delta==='number')k.delta=+s.delta.toFixed(1);
+      if(Array.isArray(s.current))k.spark=downsample(s.current,12);
+    }
+    if(Array.isArray(s.current)){
+      NRMD_DATA.traffic.current=s.current;
+      NRMD_DATA.traffic.previous=s.previous||NRMD_DATA.traffic.previous;
+      NRMD_DATA.traffic.labels =s.labels||s.current.map((_,i)=>i+1);
+    }
+    renderKpis();renderTraffic();
+  }
+  if(d&&Array.isArray(d.sources)&&d.sources.length){
+    NRMD_DATA.sources=d.sources.map((x,i)=>{
+      const st=GA4_CHANNEL_STYLE[x.name]||{};
+      return{name:st.label||x.name,color:st.color||PALETTE[i%PALETTE.length],pct:Math.round(x.pct)};
+    });
+    renderDonut();
+  }
+}
+
+async function loadLiveData(range){
+  range=range||CONFIG.defaultRange;
+  if(!CONFIG.ga4Endpoint){setDataStatus('demo');return;}
+  setDataStatus('loading');
+  try{
+    const sep=CONFIG.ga4Endpoint.includes('?')?'&':'?';
+    const res=await fetch(CONFIG.ga4Endpoint+sep+'range='+range+'d',{headers:{Accept:'application/json'}});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    applyGA4(data);
+    setDataStatus('live',data.updatedAt);
+  }catch(err){
+    console.warn('[NRMD] GA4 en vivo no disponible, usando demo:',err.message);
+    setDataStatus('demo');
+  }
+}
+
+/* ===================== range toggle ===================== */
 $('#rangeSeg').addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
   $('#rangeSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');
-  // dummy: aquí re-consultarías el rango b.dataset.r y volverías a renderizar.
-  renderTraffic();
+  renderTraffic();              // immediate re-render (demo or last state)
+  loadLiveData(b.dataset.r);    // si hay endpoint, re-consulta GA4 con el rango elegido
 });
 
 /* ===================== init ===================== */
 renderKpis();renderTraffic();renderDonut();renderNets();renderBars();renderPerNetwork();renderCohort();renderTabs();renderPosts();
+loadLiveData();                 // intenta datos en vivo; cae a demo si no hay endpoint
 window.addEventListener('resize',renderTraffic);
 </script>
 </body>
